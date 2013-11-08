@@ -22,7 +22,6 @@
         "chrisboulton/php-resque-scheduler": "1.1"
     },
     "autoload": {
-        "psr-0": { "ResqueBundle": "" }
-    },
-    "target-dir": "ResqueBundle"
+        "psr-0": { "": "src" }
+    }
 }
