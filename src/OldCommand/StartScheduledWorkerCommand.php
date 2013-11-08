@@ -56,8 +56,8 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
 
         if (!$input->getOption('foreground')) {
             $logFile = $this->getContainer()->getParameter(
-                'kernel.logs_dir'
-            ) . '/resque-scheduler_' . $this->getContainer()->getParameter('kernel.environment') . '.log';
+                APP_DIRECTORY.DIRECTORY_SEPARATOR."logs",
+            ) . '/resque-scheduler_' . $this->getContainer()->get("kernel")->getName() . '.log';
             $workerCommand = 'nohup ' . $workerCommand . ' > ' . $logFile .' 2>&1 & echo $!';
         }
 

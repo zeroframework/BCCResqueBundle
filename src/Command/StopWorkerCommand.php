@@ -1,20 +1,18 @@
 <?php
 
-namespace BCC\ResqueBundle\Command;
+namespace Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use BCC\ResqueBundle\Resque;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StopWorkerCommand extends ContainerAwareCommand
+class StopWorkerCommand extends \Model\ContainerCommand
 {
     protected function configure()
     {
         $this
-            ->setName('bcc:resque:worker-stop')
+            ->setName('resque:worker-stop')
             ->setDescription('Stop a bcc resque worker')
             ->addArgument('id', InputArgument::OPTIONAL, 'Worker id')
             ->addOption('all', 'a', InputOption::VALUE_NONE, 'Should kill all workers')
@@ -23,7 +21,7 @@ class StopWorkerCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $resque = $this->getContainer()->get('bcc_resque.resque');
+        $resque = $this->getContainer()->get('resque');
 
         if ($input->getOption('all')) {
             $workers = $resque->getWorkers();

@@ -1,7 +1,5 @@
 <?php
 
-namespace BCC\ResqueBundle;
-
 abstract class Job
 {
     /**

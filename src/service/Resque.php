@@ -1,22 +1,27 @@
 <?php
 
-namespace BCC\ResqueBundle;
+namespace service;
+
+use \Job;
+
+use \Worker;
+
+use \Queue;
 
 class Resque
 {
     /**
      * @var array
      */
-    private $kernelOptions;
-
-    /**
-     * @var array
-     */
     private $redisConfiguration;
 
-    public function __construct(array $kernelOptions)
+    public function __construct(array $redisConfiguration)
     {
-        $this->kernelOptions = $kernelOptions;
+        $this->setRedisConfiguration(
+            $redisConfiguration["host"],
+            $redisConfiguration["port"],
+            $redisConfiguration["database"]
+        );
     }
 
     public function setPrefix($prefix)
@@ -42,10 +47,6 @@ class Resque
 
     public function enqueue(Job $job, $trackStatus = false)
     {
-        if ($job instanceof ContainerAwareJob) {
-            $job->setKernelOptions($this->kernelOptions);
-        }
-
         $result = \Resque::enqueue($job->queue, \get_class($job), $job->args, $trackStatus);
 
         if ($trackStatus) {
@@ -73,10 +74,6 @@ class Resque
 
     public function enqueueAt($at,Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
-            $job->setKernelOptions($this->kernelOptions);
-        }
-
         \ResqueScheduler::enqueueAt($at, $job->queue, \get_class($job), $job->args);
 
         return null;
@@ -84,10 +81,6 @@ class Resque
 
     public function enqueueIn($in,Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
-            $job->setKernelOptions($this->kernelOptions);
-        }
-
         \ResqueScheduler::enqueueIn($in, $job->queue, \get_class($job), $job->args);
 
         return null;
@@ -95,19 +88,11 @@ class Resque
 
     public function removedDelayed(Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
-            $job->setKernelOptions($this->kernelOptions);
-        }
-
         return \ResqueScheduler::removeDelayed($job->queue, \get_class($job),$job->args);
     }
 
     public function removeFromTimestamp($at, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
-            $job->setKernelOptions($this->kernelOptions);
-        }
-
         return \ResqueScheduler::removeDelayedJobFromTimestamp($at, $job->queue, \get_class($job), $job->args);
     }
 

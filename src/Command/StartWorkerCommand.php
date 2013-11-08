@@ -1,6 +1,6 @@
 <?php
 
-namespace BCC\ResqueBundle\Command;
+namespace Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Process\Process;
@@ -9,12 +9,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StartWorkerCommand extends ContainerAwareCommand
+class StartWorkerCommand extends \Model\ContainerCommand
 {
     protected function configure()
     {
         $this
-            ->setName('bcc:resque:worker-start')
+            ->setName('resque:worker-start')
             ->setDescription('Start a bcc resque worker')
             ->addArgument('queues', InputArgument::REQUIRED, 'Queue names (separate using comma)')
             ->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'How many workers to fork', 1)
@@ -27,15 +27,16 @@ class StartWorkerCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $env = array(
-            'APP_INCLUDE' => $this->getContainer()->getParameter('kernel.root_dir').'/bootstrap.php.cache',
+            'APP_INCLUDE' => $this->getContainer()->get("resque.bootloader"),
             'QUEUE'       => $input->getArgument('queues'),
             'VERBOSE'     => 1,
             'COUNT'       => $input->getOption('count'),
             'INTERVAL'    => $input->getOption('interval'),
+            'WORKERMODE'  => 1
         );
-        $prefix = $this->getContainer()->getParameter('bcc_resque.prefix');
+        $prefix = $this->getContainer()->get('resque.prefix');
         if (!empty($prefix)) {
-            $env['PREFIX'] = $this->getContainer()->getParameter('bcc_resque.prefix');
+            $env['PREFIX'] = $this->getContainer()->get('resque.prefix');
         }
         if ($input->getOption('verbose')) {
             $env['VVERBOSE'] = 1;
@@ -44,9 +45,11 @@ class StartWorkerCommand extends ContainerAwareCommand
             unset($env['VERBOSE']);
         }
 
-        $redisHost = $this->getContainer()->getParameter('bcc_resque.resque.redis.host');
-        $redisPort = $this->getContainer()->getParameter('bcc_resque.resque.redis.port');
-        $redisDatabase = $this->getContainer()->getParameter('bcc_resque.resque.redis.database');
+        $redisConfiguration = $this->getContainer()->get('resque.redisconfiguration');
+
+        $redisHost = $redisConfiguration["host"];
+        $redisPort = $redisConfiguration["port"];
+        $redisDatabase = $redisConfiguration["database"];
         if ($redisHost != null && $redisPort != null) {
             $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
         }
@@ -60,13 +63,13 @@ class StartWorkerCommand extends ContainerAwareCommand
         }
         $workerCommand = strtr('php %opt% %dir%/chrisboulton/php-resque/resque.php', array(
             '%opt%' => $opt,
-            '%dir%' => $this->getContainer()->getParameter('bcc_resque.resque.vendor_dir'),
+            '%dir%' => $this->getContainer()->get('resque.vendor_dir'),
         ));
 
         if (!$input->getOption('foreground')) {
             $workerCommand = strtr('nohup %cmd% > %logs_dir%/resque.log 2>&1 & echo $!', array(
                 '%cmd%'      => $workerCommand,
-                '%logs_dir%' => $this->getContainer()->getParameter('kernel.logs_dir'),
+                '%logs_dir%' => $this->getContainer()->get('resque.logs_dir'),
             ));
         }
 		

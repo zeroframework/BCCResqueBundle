@@ -1,0 +1,34 @@
+{
+    "resque.command.startworker" : {
+        "class" : "Command\\StartWorkerCommand",
+        "parameters" : ["@service_container"],
+        "tags" : [
+            {"name" : "kernel.command"}
+        ]
+    },
+    "resque.command.testworker" : {
+        "class" : "Command\\TestWorkerCommand",
+        "parameters" : ["@service_container"],
+        "tags" : [
+            {"name" : "kernel.command"}
+        ]
+    },
+    "resque.command.stopworker" : {
+        "class" : "Command\\StopWorkerCommand",
+        "parameters" : ["@service_container"],
+        "tags" : [
+            {"name" : "kernel.command"}
+        ]
+    },
+    "resque.command.clearqueue" : {
+        "class" : "Command\\StopWorkerCommand",
+        "parameters" : ["@service_container"],
+        "tags" : [
+            {"name" : "kernel.command"}
+        ]
+    },
+    "resque" : {
+        "class" : "service\\Resque",
+        "parameters" : ["@resque.redisconfiguration"]
+    }
+}
