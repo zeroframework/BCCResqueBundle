@@ -20,8 +20,22 @@
             {"name" : "kernel.command"}
         ]
     },
+    "resque.command.startscheduledworker" : {
+        "class" : "Command\\StartScheduledWorkerCommand",
+        "parameters" : ["@service_container"],
+        "tags" : [
+            {"name" : "kernel.command"}
+        ]
+    },
+    "resque.command.stopscheduledworker" : {
+        "class" : "Command\\StopScheduledWorkerCommand",
+        "parameters" : ["@service_container"],
+        "tags" : [
+            {"name" : "kernel.command"}
+        ]
+    },
     "resque.command.clearqueue" : {
-        "class" : "Command\\StopWorkerCommand",
+        "class" : "Command\\ClearQueueCommand",
         "parameters" : ["@service_container"],
         "tags" : [
             {"name" : "kernel.command"}

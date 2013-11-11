@@ -19,30 +19,28 @@ class TestWorkerCommand extends ContainerCommand {
         ;
     }
 
-    /**
-     * @return \service\Resque
-     */
-    public function getResquee()
-    {
-        return $this->getContainer()->get("resque");
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("c moiiiiiiiiiii");
 
-        $executeCommand = new ExecuteCommandJob();
+        if($input->getOption("simulate-task")) {
+            $output->writeln("task simulate");
+
+            return;
+        }
+
+        $manager = $this->getApplicationManager();
 
         $command = "resque:test";
 
         $parameters = array(
-
+                "--simulate-task" => null
             )
         ;
 
-        $executeCommand->setCommand($command, $parameters);
+        $manager->getTaskManager()->add($command, $parameters, new \DateInterval("PT10S"));
 
-        $this->getResquee()->enqueue($executeCommand);
+        $manager->getTaskManager()->add($command, $parameters);
     }
 }
 

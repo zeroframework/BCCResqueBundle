@@ -28,22 +28,17 @@ class ExecuteCommandJob extends \Job implements containerAwaireInterface {
 
     public function run($args)
     {
-        echo "arguments : ".print_r($args, true);
-
-        $kernel = $this->getContainer()->get("kernel");
-
         $console = $this->getContainer()->get("console");
-
 
         $command = $console->find($args["command"]);
 
-        $arrayInput = new ArrayInput(array(
+        echo "lol";
+
+        $arrayInput = new ArrayInput(array_merge($args["input"], array(
             "command" => $args["command"]
-        ));
+        )));
 
-        $arrayInput->bind($command->getDefinition());
-
-        $returnCode = $command->run($arrayInput, new NullOutput());
+        $returnCode = $command->run($arrayInput, new ConsoleOutput());
     }
 
     public function setContainer($container)
