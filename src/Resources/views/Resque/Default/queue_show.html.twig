@@ -1,6 +1,6 @@
-{% extends 'BCCResqueBundle::layout.html.twig' %}
+{% extends 'Resque/layout.html.twig' %}
 {% block body %}
-{% include "BCCResqueBundle:Default:_menu.html.twig" with {activeNav: 'none'} %}
+{% include "Resque/Default/_menu.html.twig" with {activeNav: 'none'} %}
 <div class="container">
     <div class="row span12">
         <h3>Queue "{{ queue.name }}"</h3>

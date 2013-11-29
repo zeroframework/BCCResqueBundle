@@ -22,6 +22,10 @@ class ResqueBundle
 
         $container["resque.logs_dir"] = APP_DIRECTORY.DIRECTORY_SEPARATOR."logs";
 
+        if(!$container->has("twig.path")) $container["twig.path"] = array();
+
+        $container["twig.path"] = array_merge($container["twig.path"], array(__DIR__."/Resources/views"));
+
         $eventManager = $app->getEventManager();
 
 

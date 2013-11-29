@@ -4,9 +4,9 @@
         <div class="container">
             <a class="brand" href="{{ path('BCCResqueBundle_homepage') }}">BCC Resque</a>
             <ul class="nav">
-                <li {{ nav.activeClass(activeNav,'homepage') }}><a href="{{ path('BCCResqueBundle_homepage') }}">Home</a></li>
-                <li {{ nav.activeClass(activeNav,'scheduled_list') }}><a href="{{ path('BCCResqueBundle_scheduled_list') }}">Scheduled</a></li>
-                <li {{ nav.activeClass(activeNav,'failed_list') }}><a href="{{ path('BCCResqueBundle_failed_list') }}">Failed</a></li>
+                <li {{ nav.activeClass(activeNav,'homepage') }}><a href="{{ path('task/manager') }}">Home</a></li>
+                <li {{ nav.activeClass(activeNav,'scheduled_list') }}><a href="{{ path('task/scheduledlist') }}">Scheduled</a></li>
+                <li {{ nav.activeClass(activeNav,'failed_list') }}><a href="{{ path('task/failedlist') }}">Failed</a></li>
             </ul>
         </div>
     </div>

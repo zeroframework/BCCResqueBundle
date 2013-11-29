@@ -195,7 +195,7 @@ class Resque
         $result = array();
 
         foreach ($jobs as $job) {
-            $result[] = new FailedJob(json_decode($job, true));
+            $result[] = new \FailedJob(json_decode($job, true));
         }
 
         return $result;

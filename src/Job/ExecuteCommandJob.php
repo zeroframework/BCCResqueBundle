@@ -32,8 +32,6 @@ class ExecuteCommandJob extends \Job implements containerAwaireInterface {
 
         $command = $console->find($args["command"]);
 
-        echo "lol";
-
         $arrayInput = new ArrayInput(array_merge($args["input"], array(
             "command" => $args["command"]
         )));
