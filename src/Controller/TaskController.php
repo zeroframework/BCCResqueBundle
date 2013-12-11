@@ -71,6 +71,8 @@ class TaskController extends AbstractController
 
     public function showTimestampAction($timestamp)
     {
+        $timestamp = $this->getRequest()->query->get("timestamp");
+
         $jobs = array();
 
         // we don't want to enable the twig debug extension for this...
