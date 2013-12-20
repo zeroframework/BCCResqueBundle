@@ -61,9 +61,9 @@ class StartWorkerCommand extends \Model\ContainerCommand
         if (0 !== $m = (int) $input->getOption('memory-limit')) {
             $opt = sprintf('-d memory_limit=%dM', $m);
         }
-        $workerCommand = strtr('php %opt% %dir%/chrisboulton/php-resque/resque.php', array(
+        $workerCommand = strtr('php %opt% %dir%/resque', array(
             '%opt%' => $opt,
-            '%dir%' => $this->getContainer()->get('resque.vendor_dir'),
+            '%dir%' => $this->getContainer()->get('resque.vendor_dir')."/bin",
         ));
 
         if (!$input->getOption('foreground')) {

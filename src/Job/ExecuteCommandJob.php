@@ -21,6 +21,11 @@ class ExecuteCommandJob extends \Job implements containerAwaireInterface {
         $this->args = $args;
     }
 
+    public function getCommand()
+    {
+        return $this->args["command"];
+    }
+
     public function setUp()
     {
         $this->setContainer(\app::getInstance()->getServiceContainer());
