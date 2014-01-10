@@ -1,7 +1,7 @@
 {% extends 'Resque/layout.html.twig' %}
 {% block body %}
 {% include "Resque/Default/_menu.html.twig" with {activeNav: 'failed_list'} %}
-<div class="container">
+<div class="col-md-12">
     <div class="row span12">
         <h2>Failed Jobs</h2>
         {% include "Resque/Default/_miniPager.html.twig" %}

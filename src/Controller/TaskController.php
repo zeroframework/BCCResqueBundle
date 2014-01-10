@@ -11,6 +11,8 @@ class TaskController extends AbstractController
 
     public function indexAction()
     {
+        $this->onlyAdmin();
+
         return $this->render(
             'Resque/Default/index.html.twig',
             array(
@@ -21,6 +23,8 @@ class TaskController extends AbstractController
 
     public function showQueueAction($queue)
     {
+        $this->onlyAdmin();
+
         list($start, $count, $showingAll) = $this->getShowParameters();
 
         $queue = $this->getResque()->getQueue($queue);
@@ -42,6 +46,8 @@ class TaskController extends AbstractController
 
     public function listFailedAction()
     {
+        $this->onlyAdmin();
+
         list($start, $count, $showingAll) = $this->getShowParameters();
 
         $jobs = $this->getResque()->getFailedJobs($start, $count);
@@ -61,6 +67,8 @@ class TaskController extends AbstractController
 
     public function listScheduledAction()
     {
+        $this->onlyAdmin();
+
         return $this->render(
             'Resque/Default/scheduled_list.html.twig',
             array(
@@ -71,6 +79,8 @@ class TaskController extends AbstractController
 
     public function showTimestampAction($timestamp)
     {
+        $this->onlyAdmin();
+
         $timestamp = $this->getRequest()->query->get("timestamp");
 
         $jobs = array();
@@ -104,6 +114,8 @@ class TaskController extends AbstractController
      */
     private function getShowParameters()
     {
+        $this->onlyAdmin();
+
         $showingAll = false;
         $start = -100;
         $count = -1;

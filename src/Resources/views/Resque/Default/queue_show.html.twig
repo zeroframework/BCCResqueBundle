@@ -1,7 +1,7 @@
 {% extends 'Resque/layout.html.twig' %}
 {% block body %}
 {% include "Resque/Default/_menu.html.twig" with {activeNav: 'none'} %}
-<div class="container">
+<div class="col-md-12">
     <div class="row span12">
         <h3>Queue "{{ queue.name }}"</h3>
         {% include "BCCResqueBundle:Default:_miniPager.html.twig" %}

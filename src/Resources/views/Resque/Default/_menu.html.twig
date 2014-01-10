@@ -1,16 +1,10 @@
 {% import _self as nav %}
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="{{ path('BCCResqueBundle_homepage') }}">BCC Resque</a>
-            <ul class="nav">
-                <li {{ nav.activeClass(activeNav,'homepage') }}><a href="{{ path('task/manager') }}">Home</a></li>
-                <li {{ nav.activeClass(activeNav,'scheduled_list') }}><a href="{{ path('task/scheduledlist') }}">Scheduled</a></li>
-                <li {{ nav.activeClass(activeNav,'failed_list') }}><a href="{{ path('task/failedlist') }}">Failed</a></li>
+            <ul class="nav nav-tabs">
+                <li {{ nav.activeClass(activeNav,'homepage') }}><a href="{{ path('taskmanager') }}">Home</a></li>
+                <li {{ nav.activeClass(activeNav,'scheduled_list') }}><a href="{{ path('taskmanager/scheduledlist') }}">Scheduled</a></li>
+                <li {{ nav.activeClass(activeNav,'failed_list') }}><a href="{{ path('taskmanager/failedlist') }}">Failed</a></li>
             </ul>
-        </div>
-    </div>
-</div>
+
 
 {% macro activeClass(activeNav,item) %}
 {% if activeNav == item %}
