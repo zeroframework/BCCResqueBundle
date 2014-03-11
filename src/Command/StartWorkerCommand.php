@@ -26,6 +26,9 @@ class StartWorkerCommand extends \Model\ContainerCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Version for resque
+        //#610c4dcdbf3e7e5856f694384f3160db94850d1f
+
         $env = array(
             'APP_INCLUDE' => $this->getContainer()->get("resque.bootloader"),
             'QUEUE'       => $input->getArgument('queues'),
@@ -34,6 +37,7 @@ class StartWorkerCommand extends \Model\ContainerCommand
             'INTERVAL'    => $input->getOption('interval'),
             'WORKERMODE'  => 1
         );
+
         $prefix = $this->getContainer()->get('resque.prefix');
         if (!empty($prefix)) {
             $env['PREFIX'] = $this->getContainer()->get('resque.prefix');
@@ -61,9 +65,10 @@ class StartWorkerCommand extends \Model\ContainerCommand
         if (0 !== $m = (int) $input->getOption('memory-limit')) {
             $opt = sprintf('-d memory_limit=%dM', $m);
         }
-        $workerCommand = strtr('php %opt% %dir%/resque', array(
+        $workerCommand = strtr('php %opt% %dir%/resque --env=%environement%', array(
             '%opt%' => $opt,
             '%dir%' => $this->getContainer()->get('resque.vendor_dir')."/bin",
+            "%environement%" => $this->getContainer()->get("kernel")->getName()
         ));
 
         if (!$input->getOption('foreground')) {
