@@ -15,9 +15,9 @@
             <tbody>
             {% for job in jobs %}
                 <tr>
-                    <th class="span1">{{ loop.index }}</th>
+                    <th class="span1">{{ loop.index }} <a href="{{ job["removeurl"] }}">Supprimer</a></th>
                     <td class="span11">
-                        <pre>{{ job }}</pre>
+                        <pre>{{ job["print"] }}</pre>
                     </td>
                 </tr>
             {% endfor %}
