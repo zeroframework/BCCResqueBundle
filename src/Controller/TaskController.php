@@ -2,6 +2,10 @@
 
 namespace Controller;
 
+use controllers\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+
 class TaskController extends AbstractController
 {
     public function __construct()
@@ -87,7 +91,17 @@ class TaskController extends AbstractController
 
         // we don't want to enable the twig debug extension for this...
         foreach ($this->getResque()->getJobsForTimestamp($timestamp) as $job) {
-            $jobs[] = print_r($job, true);
+            $data = base64_encode(json_encode(array_merge(
+                $job,
+                array(
+                    "timestamp" => $timestamp
+                )
+            ), true));
+
+            $jobs[] = array(
+                "print" => print_r($job, true),
+                "removeurl" => $this->generate("taskmanager_deleteJob", array("data" => $data, "noci" => 1))
+            );
         }
 
         return $this->render(
@@ -97,6 +111,24 @@ class TaskController extends AbstractController
                 'jobs' => $jobs
             )
         );
+    }
+
+    public function removeJob()
+    {
+        $request = $this->getRequest();
+
+        $data = json_decode(base64_decode($request->query->get("data")), true);
+
+        $redis = \Resque::redis();
+
+        $redis->del("delayed:".$data["timestamp"]);
+        $redis->zrem('delayed_queue_schedule', $data["timestamp"]);
+
+        //\ResqueScheduler::removeDelayed($data["queue"], $data["class"], $data["args"]);
+
+        return new RedirectResponse($this->getRequest()->headers->get('referer'));
+
+        //
     }
 
     /**
