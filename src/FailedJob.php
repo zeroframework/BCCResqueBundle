@@ -20,6 +20,11 @@ class FailedJob
         return $this->data['failed_at'];
     }
 
+    public function getArgs()
+    {
+        return $this->data['payload']['args']; // 
+    }
+
     public function getName()
     {
         return $this->data['payload']['class'];

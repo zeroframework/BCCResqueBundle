@@ -11,6 +11,7 @@
                     <th>Queue</th>
                     <th>Failed at</th>
                     <th>Job</th>
+                    <th>Args</th>
                     <th>Error</th>
                 </tr>
             </thead>
@@ -20,6 +21,7 @@
                     <td class="span1">{{ job.queueName }}</td>
                     <td class="span2">{{ job.failedAt }}</td>
                     <td class="span4">{{ job.name }}</td>
+                    <td class="span4">{{ job.args | json_encode | raw }}</td>
                     <td class="span5">
                         {{ job.exceptionClass }}<br>
                         {{ job.error }}
